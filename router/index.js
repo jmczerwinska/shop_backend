@@ -1,5 +1,6 @@
 const express = require('express');
 const AuthRouter = require('./auth');
+const DbRouter = require("./db")
 
 class AppRouter {
     constructor() {
@@ -7,7 +8,8 @@ class AppRouter {
         this.routes();
     }
     routes(){
-        this.router.use('/auth', new AuthRouter().router)
+        this.router.use('/auth', new AuthRouter().router);
+        this.router.use('/db', new DbRouter().router);
     }
 }
 

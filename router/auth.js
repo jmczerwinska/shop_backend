@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const AuthContorller = require('../controlers/auth-controller');
+const AuthContorller = require('../controlers/auth-controller.js');
 
 const jsonParser = bodyParser.json();
 
