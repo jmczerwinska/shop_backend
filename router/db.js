@@ -40,7 +40,7 @@ class DbRouter {
             })
             // .then(response => {
             //     console.log(response.status);
-            //     if (response.status === 404) {
+            //     if (response.status === "404") {
             //         res.status(404).send('Not found');
             //     } else {
             //         res.status(200).send(response)
