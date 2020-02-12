@@ -8,7 +8,7 @@ const jsonParser = bodyParser.json();
 
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
-    cb(null, "images");
+    cb(null, path.join(__dirname, '../images'));
   },
   filename: function(req, file, cb) {
     cb(null, file.fieldname + Date.now() + path.extname(file.originalname));
@@ -36,13 +36,12 @@ class DbRouter {
 
     _addProduct(req, res){
         const { name, count, description, price } = req.body;
-        const imgPath = req.file.path;
-        if (name === undefined || count === undefined || imgPath === undefined ||
+        const img = req.file.filename;
+        if (name === undefined || count === undefined || img === undefined ||
             description === undefined || price === undefined) {
             res.status(400).send("Incorrect data - some fields are missing");
         } else {
-            this.controller
-            .addProduct(name, count, description, price, imgPath)
+            this.controller.addProduct(name, count, description, price, img)
             .then(response => res.send(response))
             .catch(err => res.status(err.status).send(err));
         }
@@ -50,10 +49,11 @@ class DbRouter {
 
     _getAll(req, res){
         this.controller.getAll()
-        .then(response => {
-            res.send(response);
-        })
-        .catch(err => res.status(err.status).send(err));
+            .then((result) => {
+                const data = result.rows.map((item) => item.doc);
+                res.send(data);
+            })
+            .catch(err => res.status(err.status).send(err));
     }
 
     _getProduct(req, res){

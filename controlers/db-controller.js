@@ -43,4 +43,5 @@ class DbController {
     return this.db.remove(doc._id, doc._rev);
   }
 }
+
 module.exports = DbController;
