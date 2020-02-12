@@ -24,9 +24,9 @@ class DbController {
     return this.db.get(id);
   }
 
-  updateProduct(doc, newData) {
+  updateProduct(doc, newData, imgPath) {
     return this.db.put({
-      ...doc, ...newData
+      ...doc, ...newData, img: imgPath
     })
   }
   

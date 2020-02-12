@@ -27,7 +27,7 @@ class DbRouter {
 
     routes(){
         this.router.post('/', upload.single('img'), this._addProduct.bind(this));
-        this.router.put('/:id', jsonParser, this._updateProduct.bind(this));
+        this.router.put('/:id', upload.single('img'), this._updateProduct.bind(this));
         this.router.put('/:id/buy', jsonParser, this._buyProduct.bind(this))
         this.router.get('/', jsonParser, this._getAll.bind(this));
         this.router.get('/:id', jsonParser, this._getProduct.bind(this));
@@ -44,7 +44,7 @@ class DbRouter {
             this.controller
             .addProduct(name, count, description, price, imgPath)
             .then(response => res.send(response))
-            .catch(err => res.status(500).send(err));
+            .catch(err => res.status(err.status).send(err));
         }
     }
 
@@ -53,7 +53,7 @@ class DbRouter {
         .then(response => {
             res.send(response);
         })
-        .catch(err => res.status(500).send(err));
+        .catch(err => res.status(err.status).send(err));
     }
 
     _getProduct(req, res){
@@ -62,7 +62,7 @@ class DbRouter {
             .then(response => {
                 res.send(response);
             })
-            .catch(err => res.status(500).send(err));
+            .catch(err => res.status(err.status).send(err));
     }
 
     _deleteProduct(req, res) {
@@ -73,17 +73,18 @@ class DbRouter {
                 this.controller.deleteProduct(doc);
             })
             .then(response => res.send(response))
-            .catch(err => res.status(err.status).send(err.message));
+            .catch(err => res.status(err.status).send(err));
     }
 
     _updateProduct(req, res) {
         const id = req.params.id;
         const newData = req.body;
+        const imgPath = req.file.path;
         
         this.controller.getProductId(id)
-           .then(doc => this.controller.updateProduct(doc, newData))
+           .then(doc => this.controller.updateProduct(doc, newData, imgPath))
            .then(response => res.send(response))
-           .catch(err => res.status(err.status).send(err.message));
+           .catch(err => res.status(err.status).send(err));
     }
 
     _buyProduct(req, res) {
@@ -93,7 +94,7 @@ class DbRouter {
         this.controller.getProductId(id)
           .then(doc => this.controller.buyProduct(doc, buyCount))
           .then(response => res.send(response))
-          .catch(err => res.status(err.status).send(err.message));
+          .catch(err => res.status(err.status).send(err));
     }
 
     _deleteImg(doc) {
