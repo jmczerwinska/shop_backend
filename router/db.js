@@ -33,8 +33,10 @@ class DbRouter {
     }
 
     _addProduct(req, res){
+        console.log(req.file.path);
         const itemData = req.body;
-        this.controller.addProduct(itemData.name, itemData.count, itemData.description, itemData.price)
+        const imgPath = req.file.path;
+        this.controller.addProduct(itemData.name, itemData.count, itemData.description, itemData.price, imgPath)
         .then(response => res.send(response))
         .catch(err => res.status(500).send(err));
     }
