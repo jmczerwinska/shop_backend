@@ -1,20 +1,35 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const DbContorller = require('../controlers/db-controller');
+const DbController = require('../controlers/db-controller');
+const multer = require('multer');
+const path = require('path');
 
 const jsonParser = bodyParser.json();
+
+const storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, "images");
+  },
+  filename: function(req, file, cb) {
+    cb(null, file.fieldname + Date.now() + path.extname(file.originalname));
+  }
+});
+
+const upload = multer({ storage: storage });
+
 
 class DbRouter {
     constructor() {
         this.router = express.Router();
-        this.controller = new DbContorller();
+        this.controller = new DbController();
         this.routes();
     }
 
     routes(){
-        this.router.post('/', jsonParser, this._addProduct.bind(this));
+        this.router.post('/', upload.single('img'), this._addProduct.bind(this));
         this.router.get('/', jsonParser, this._getAll.bind(this));
         this.router.get('/:id', jsonParser, this._getProduct.bind(this));
+        this.router.delete('/:id',jsonParser, this._deleteProduct.bind(this));
     }
 
     _addProduct(req, res){
@@ -49,6 +64,17 @@ class DbRouter {
             .catch(err => res.status(500).send(err));
     }
 
+    _deleteProduct() {
+        
+    }
+
+    _updateProduct() {
+
+    }
+
+    _buyProduct() {
+
+    }
 
 }
 
