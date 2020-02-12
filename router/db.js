@@ -27,7 +27,8 @@ class DbRouter {
 
     routes(){
         this.router.post('/', upload.single('img'), this._addProduct.bind(this));
-        this.router.put('/:id', jsonParser, this._updateProduct.bind(this))
+        this.router.put('/:id', jsonParser, this._updateProduct.bind(this));
+        this.router.put('/:id/buy', jsonParser, this._buyProduct.bind(this))
         this.router.get('/', jsonParser, this._getAll.bind(this));
         this.router.get('/:id', jsonParser, this._getProduct.bind(this));
         this.router.delete('/:id',jsonParser, this._deleteProduct.bind(this));
@@ -78,14 +79,21 @@ class DbRouter {
     _updateProduct(req, res) {
         const id = req.params.id;
         const newData = req.body;
+        
         this.controller.getProductId(id)
            .then(doc => this.controller.updateProduct(doc, newData))
            .then(response => res.send(response))
-        //    .catch(err => res.status(err.status).send(err.message));
+           .catch(err => res.status(err.status).send(err.message));
     }
 
-    _buyProduct() {
+    _buyProduct(req, res) {
+        const id = req.params.id;
+        const buyCount = req.body.count;
 
+        this.controller.getProductId(id)
+          .then(doc => this.controller.buyProduct(doc, buyCount))
+          .then(response => res.send(response))
+          .catch(err => res.status(err.status).send(err.message));
     }
 
     _deleteImg(doc) {

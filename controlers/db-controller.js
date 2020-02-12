@@ -29,6 +29,15 @@ class DbController {
       ...doc, ...newData
     })
   }
+  
+  buyProduct(doc, buyCount) {
+    const count = doc.count - buyCount;
+
+    return this.db.put({
+      ...doc,
+      "count": count
+    });
+  }
 
   deleteProduct(doc) {
     return this.db.remove(doc._id, doc._rev);
