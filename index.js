@@ -1,5 +1,6 @@
 const express = require('express');
 const AppRouter = require('./router');
+const cors = require('cors');
 const path = require('path');
 
 class App {
@@ -10,9 +11,10 @@ class App {
             console.log('Server has been strated at port 3000');
         });
         this.httpApp.use('/api', new AppRouter().router);
-        this.httpApp.use('/static', express.static(path.join(__dirname, 'images')))
-
+        this.httpApp.use('/static', express.static(path.join(__dirname, 'images')));
+        this.httpApp.use(cors);
     }
+    
     startServer(portNo) {
         return new Promise ((resolve) => {
             this.httpApp.listen(portNo, () => {
@@ -21,4 +23,5 @@ class App {
         })
     }
 }
+
 const app = new App();
