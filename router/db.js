@@ -34,11 +34,17 @@ class DbRouter {
     }
 
     _addProduct(req, res){
-        const itemData = req.body;
+        const { name, count, description, price } = req.body;
         const imgPath = req.file.path;
-        this.controller.addProduct(itemData.name, itemData.count, itemData.description, itemData.price, imgPath)
-        .then(response => res.send(response))
-        .catch(err => res.status(500).send(err));
+        if (name === undefined || count === undefined || imgPath === undefined ||
+            description === undefined || price === undefined) {
+            res.status(400).send("Incorrect data - some fields are missing");
+        } else {
+            this.controller
+            .addProduct(name, count, description, price, imgPath)
+            .then(response => res.send(response))
+            .catch(err => res.status(500).send(err));
+        }
     }
 
     _getAll(req, res){
