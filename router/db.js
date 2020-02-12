@@ -33,7 +33,6 @@ class DbRouter {
     }
 
     _addProduct(req, res){
-        console.log(req.file.path);
         const itemData = req.body;
         const imgPath = req.file.path;
         this.controller.addProduct(itemData.name, itemData.count, itemData.description, itemData.price, imgPath)
@@ -66,8 +65,14 @@ class DbRouter {
             .catch(err => res.status(500).send(err));
     }
 
-    _deleteProduct() {
-        
+    _deleteProduct(req, res) {
+        const id = req.params.id;
+        this.controller.getProductId(id)
+            .then(doc => {
+                this.controller.deleteProduct(doc);
+            })
+            .then(response => res.send(response))
+            .catch(err => res.status(err.status).send(err.message))
     }
 
     _updateProduct() {
@@ -76,6 +81,14 @@ class DbRouter {
 
     _buyProduct() {
 
+    }
+
+    _deleteImg(doc) {
+        path = doc.img;
+        false.unlink(path, (err) => {
+            if (err) throw err;
+            console.log('file was deleted');
+        })
     }
 
 }

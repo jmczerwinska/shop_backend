@@ -24,9 +24,8 @@ class DbController {
     return this.db.get(id);
   }
 
-  deleteProduct(id) {
-    return this.db.remove(id);
+  deleteProduct(doc) {
+    return this.db.remove(doc._id, doc._rev);
   }
-
 }
 module.exports = DbController;
