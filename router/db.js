@@ -27,6 +27,7 @@ class DbRouter {
 
     routes(){
         this.router.post('/', upload.single('img'), this._addProduct.bind(this));
+        this.router.put('/:id', jsonParser, this._updateProduct.bind(this))
         this.router.get('/', jsonParser, this._getAll.bind(this));
         this.router.get('/:id', jsonParser, this._getProduct.bind(this));
         this.router.delete('/:id',jsonParser, this._deleteProduct.bind(this));
@@ -54,14 +55,6 @@ class DbRouter {
             .then(response => {
                 res.send(response);
             })
-            // .then(response => {
-            //     console.log(response.status);
-            //     if (response.status === "404") {
-            //         res.status(404).send('Not found');
-            //     } else {
-            //         res.status(200).send(response)
-            //     }
-            // })
             .catch(err => res.status(500).send(err));
     }
 
@@ -69,14 +62,20 @@ class DbRouter {
         const id = req.params.id;
         this.controller.getProductId(id)
             .then(doc => {
+                // console.log(req.body, doc);
                 this.controller.deleteProduct(doc);
             })
             .then(response => res.send(response))
-            .catch(err => res.status(err.status).send(err.message))
+            .catch(err => res.status(err.status).send(err.message));
     }
 
-    _updateProduct() {
-
+    _updateProduct(req, res) {
+        const id = req.params.id;
+        const newData = req.body;
+        this.controller.getProductId(id)
+           .then(doc => this.controller.updateProduct(doc, newData))
+           .then(response => res.send(response))
+        //    .catch(err => res.status(err.status).send(err.message));
     }
 
     _buyProduct() {

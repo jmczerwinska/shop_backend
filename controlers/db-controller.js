@@ -24,6 +24,12 @@ class DbController {
     return this.db.get(id);
   }
 
+  updateProduct(doc, newData) {
+    return this.db.put({
+      ...doc, ...newData
+    })
+  }
+
   deleteProduct(doc) {
     return this.db.remove(doc._id, doc._rev);
   }
