@@ -17,7 +17,6 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-
 class DbRouter {
     constructor() {
         this.router = express.Router();
@@ -27,7 +26,7 @@ class DbRouter {
 
     routes(){
         this.router.post('/', upload.single('img'), this._addProduct.bind(this));
-        this.router.put('/:id', upload.single('img'), this._updateProduct.bind(this));
+        this.router.put('/:id', jsonParser, this._updateProduct.bind(this));
         this.router.put('/:id/buy', jsonParser, this._buyProduct.bind(this))
         this.router.get('/', jsonParser, this._getAll.bind(this));
         this.router.get('/:id', jsonParser, this._getProduct.bind(this));
@@ -37,6 +36,7 @@ class DbRouter {
     _addProduct(req, res){
         const { name, count, description, price } = req.body;
         const img = req.file.filename;
+        console.log(typeof price);
         if (name === undefined || count === undefined || img === undefined ||
             description === undefined || price === undefined) {
             res.status(400).send("Incorrect data - some fields are missing");
@@ -69,7 +69,6 @@ class DbRouter {
         const id = req.params.id;
         this.controller.getProductId(id)
             .then(doc => {
-                // console.log(req.body, doc);
                 this.controller.deleteProduct(doc);
             })
             .then(response => res.send(response))
@@ -79,10 +78,9 @@ class DbRouter {
     _updateProduct(req, res) {
         const id = req.params.id;
         const newData = req.body;
-        const imgPath = req.file.path;
         
         this.controller.getProductId(id)
-           .then(doc => this.controller.updateProduct(doc, newData, imgPath))
+           .then(doc => this.controller.updateProduct(doc, newData))
            .then(response => res.send(response))
            .catch(err => res.status(err.status).send(err));
     }

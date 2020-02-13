@@ -8,11 +8,11 @@ class DbController {
 
   addProduct(name, count, description, price, img) {
     return this.db.post({
-      name,
-      count,
-      description,
-      price,
-      img
+      name: name,
+      count: parseInt(count),
+      description: description,
+      price: parseInt(price),
+      img: img
     });
   }
 
@@ -24,10 +24,8 @@ class DbController {
     return this.db.get(id);
   }
 
-  updateProduct(doc, newData, imgPath) {
-    return this.db.put({
-      ...doc, ...newData, img: imgPath
-    })
+  updateProduct(doc, newData) {
+    return this.db.put( { ...doc, ...newData });
   }
   
   buyProduct(doc, buyCount) {
