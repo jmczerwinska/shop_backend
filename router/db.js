@@ -36,7 +36,6 @@ class DbRouter {
     _addProduct(req, res){
         const { name, count, description, price } = req.body;
         const img = req.file.filename;
-        console.log(typeof price);
         if (name === undefined || count === undefined || img === undefined ||
             description === undefined || price === undefined) {
             res.status(400).send("Incorrect data - some fields are missing");
@@ -71,7 +70,7 @@ class DbRouter {
             .then(doc => {
                 this.controller.deleteProduct(doc);
             })
-            .then(response => res.send(response))
+            .then(response => res.send({ response }))
             .catch(err => res.status(err.status).send(err));
     }
 

@@ -38,7 +38,7 @@ class DbController {
   }
 
   deleteProduct(doc) {
-    return this.db.remove(doc._id, doc._rev);
+    return this.db.remove(doc);
   }
 }
 
