@@ -8,7 +8,7 @@ class AuthController {
     }
 
     getAllUsers(){
-        return this.db.allDocs()
+        return this.db.allDocs({ include_docs: true });
     }
 
     changePassword(id,data){

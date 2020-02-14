@@ -12,7 +12,7 @@ class AuthRouter {
     }
     routes(){
         //GET api/auth/
-        this.router.get('/', jsonParser, this._checkPassword.bind(this));
+        this.router.get('/', jsonParser, this._getAllUsers.bind(this));
         // POST api/auth/
         this.router.post('/', jsonParser, this._checkPassword.bind(this));
         // POST api/auth/create
@@ -20,7 +20,16 @@ class AuthRouter {
         // PUT api/auth/:id
         this.router.put('/:id', jsonParser, this._changePassword.bind(this));
         //DELETE api/auth/:id
-        this.router.delete('/id', jsonParser, this._deleteUser.bind(this));
+        this.router.delete('/:id', jsonParser, this._deleteUser.bind(this));
+    }
+
+    _getAllUsers(req,res) {
+        this.controller.getAllUsers()
+            .then((result) => {
+                const data = result.rows.map(user => user.doc);
+                res.send(data);
+            })
+            .catch(err => res.status(err.status).send(err));
     }
 
     _checkPassword(req, res) {
