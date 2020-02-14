@@ -94,13 +94,13 @@ class DbRouter {
           .catch(err => res.status(err.status).send(err));
     }
 
-    _deleteImg(doc) {
-        path = doc.img;
-        false.unlink(path, (err) => {
-            if (err) throw err;
-            console.log('file was deleted');
-        })
-    }
+    // _deleteImg(doc) {
+    //     path = doc.img;
+    //     false.unlink(path, (err) => {
+    //         if (err) throw err;
+    //         console.log('file was deleted');
+    //     })
+    // }
 
 }
 

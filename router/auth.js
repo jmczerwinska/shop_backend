@@ -11,12 +11,16 @@ class AuthRouter {
         this.routes();
     }
     routes(){
+        //GET api/auth/
+        this.router.get('/', jsonParser, this._checkPassword.bind(this));
         // POST api/auth/
         this.router.post('/', jsonParser, this._checkPassword.bind(this));
         // POST api/auth/create
         this.router.post('/create', jsonParser, this._createUser.bind(this));
         // PUT api/auth/:id
         this.router.put('/:id', jsonParser, this._changePassword.bind(this));
+        //DELETE api/auth/:id
+        this.router.delete('/id', jsonParser, this._deleteUser.bind(this));
     }
 
     _checkPassword(req, res) {
@@ -34,20 +38,30 @@ class AuthRouter {
 
     _createUser(req, res) {
         const  userData = req.body;
-        this.controller.createUser(userData.login, userData.password, userData.email)
-            .then(response => {
-                res.send(response)
-            })
-            .catch((err) => {
-                res.status(500).send(err);
-             });
+        this.controller.checkLogin(userData.login).then(result => {
+            if(result.doc !== []) {
+                res.status(409).send('Conflict');
+            } else {
+                 this.controller.createUser(userData.login, userData.password, userData.email)
+                    .then(response => res.send(response));
+            }
+        })
+        .catch(err => res.status(err.status).send(err));
+    }
+
+    _deleteUser(req, res) {
+        const id = req.params.id;
+
+        this.controller.deleteUser(id)
+            .then(result => res.send(result))
+            .catch(err => res.status(err.status).send(err));
     }
     
     _changePassword(req,res){
         const id = req.params.id;
         this.controller.changePassword(id, req.body)
             .then(response => res.send(response))
-            .catch(err => res.status(500).send(err));
+            .catch(err => res.status(err.status).send(err));
     }
 
 

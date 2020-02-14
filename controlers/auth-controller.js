@@ -3,8 +3,12 @@ PouchDB.plugin(require('pouchdb-find'));
 
 class AuthController {
     constructor(){
-        this.db = new PouchDB('../db/auth');
+        this.db = new PouchDB('db/auth');
 
+    }
+
+    getAllUsers(){
+        return this.db.allDocs()
     }
 
     changePassword(id,data){
@@ -24,6 +28,18 @@ class AuthController {
             selector: {login ,password},
             fields: ['_id','login']
         });
+    }
+
+    checkLogin (login) {
+        return this.db.find({
+            selector: { login },
+            fields: ['login']
+        });
+    }
+
+    deleteUser(id) {
+        return this._getUser(id)
+        .then(user => this.db.remove(user));
     }
 
     _getUser(id) {
