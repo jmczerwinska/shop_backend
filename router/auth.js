@@ -48,7 +48,8 @@ class AuthRouter {
     _createUser(req, res) {
         const  userData = req.body;
         this.controller.checkLogin(userData.login).then(result => {
-            if(result.doc !== []) {
+            if(result.docs.length > 0) {
+                console.log(result.docs)
                 res.status(409).send('Conflict');
             } else {
                  this.controller.createUser(userData.login, userData.password, userData.email)

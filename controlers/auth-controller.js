@@ -33,7 +33,7 @@ class AuthController {
     checkLogin (login) {
         return this.db.find({
             selector: { login },
-            fields: ['login']
+            fields: ['_id','login']
         });
     }
 
