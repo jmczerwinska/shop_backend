@@ -11,7 +11,7 @@ class DbController {
       name: name,
       count: parseInt(count),
       description: description,
-      price: parseInt(price),
+      price: parseFloat(price),
       img: img
     });
   }
