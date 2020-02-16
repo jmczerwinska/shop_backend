@@ -36,12 +36,13 @@ class AuthRouter {
         const userData = req.body;
         this.controller.checkPassword(userData.login, userData.password)
             .then(response => {
-                if (response.docs.length ===0) {
+                if (response.docs.length === 0) {
                     res.status(401).send('Wrong credentials');
                 } else {
                     res.status(200).send(response.docs[0])
                 }
         })
+        .catch(err => res.status(err.status).send(err));
             
     }
 
