@@ -1,13 +1,13 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const AuthContorller = require('../controlers/auth-controller.js');
+const AuthController = require('../controllers/auth-controller.js');
 
 const jsonParser = bodyParser.json();
 
 class AuthRouter {
     constructor() {
         this.router = express.Router();
-        this.controller = new AuthContorller();
+        this.controller = new AuthController();
         this.routes();
     }
     routes(){

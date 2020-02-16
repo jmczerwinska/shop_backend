@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const DbController = require('../controlers/db-controller');
+const DbController = require('../controllers/db-controller');
 const multer = require('multer');
 const path = require('path');
 
