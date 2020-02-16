@@ -13,8 +13,8 @@ class AuthRouter {
     routes(){
         //GET api/auth/
         this.router.get('/', jsonParser, this._getAllUsers.bind(this));
-        // POST api/auth/
-        this.router.post('/', jsonParser, this._checkPassword.bind(this));
+        // POST api/auth/login
+        this.router.post('/login', jsonParser, this._checkPassword.bind(this));
         // POST api/auth/create
         this.router.post('/create', jsonParser, this._createUser.bind(this));
         // PUT api/auth/:id
