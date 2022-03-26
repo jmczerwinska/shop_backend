@@ -28,6 +28,6 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.2",
-    "minimist": ">=1.2.2"
+    "minimist": ">=1.2.6"
   }
 }
